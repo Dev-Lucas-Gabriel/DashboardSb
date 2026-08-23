@@ -8,7 +8,7 @@ export default function Header({ userEmail, onSignOut }) {
           <Store size={20} color="#0A0A0C" strokeWidth={2.4} />
         </div>
         <div>
-          <div className="brand-name">SBSHOP</div>
+          <div className="brand-name">DASHBOARD</div>
           <div className="brand-sub">Controle de caixa — entradas, saídas e lucro</div>
         </div>
       </div>

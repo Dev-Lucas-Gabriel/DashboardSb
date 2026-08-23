@@ -12,20 +12,27 @@ create table if not exists public.entries (
 
 alter table public.entries enable row level security;
 
--- Qualquer pessoa logada da equipe pode ver todos os lançamentos da loja.
-create policy "Equipe pode ver lançamentos"
+drop policy if exists "Equipe pode ver lançamentos" on public.entries;
+drop policy if exists "Equipe pode adicionar lançamentos" on public.entries;
+drop policy if exists "Equipe pode excluir lançamentos" on public.entries;
+drop policy if exists "Usuário vê apenas seus lançamentos" on public.entries;
+drop policy if exists "Usuário adiciona seus lançamentos" on public.entries;
+drop policy if exists "Usuário exclui seus lançamentos" on public.entries;
+
+-- Cada usuário só vê os próprios lançamentos.
+create policy "Usuário vê apenas seus lançamentos"
   on public.entries for select
   to authenticated
-  using (true);
+  using (auth.uid() = created_by);
 
--- Qualquer pessoa logada pode adicionar lançamentos.
-create policy "Equipe pode adicionar lançamentos"
+-- Cada usuário só pode adicionar lançamentos em seu próprio nome.
+create policy "Usuário adiciona seus lançamentos"
   on public.entries for insert
   to authenticated
-  with check (true);
+  with check (auth.uid() = created_by);
 
--- Qualquer pessoa logada pode excluir lançamentos.
-create policy "Equipe pode excluir lançamentos"
+-- Cada usuário só pode excluir os próprios lançamentos.
+create policy "Usuário exclui seus lançamentos"
   on public.entries for delete
   to authenticated
-  using (true);
+  using (auth.uid() = created_by);
