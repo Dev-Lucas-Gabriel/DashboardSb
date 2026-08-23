@@ -167,11 +167,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   grid-template-columns: 2fr 1fr;
   gap: 12px;
   margin-bottom: 12px;
-  align-items: start;
+  align-items: stretch;
 }
 @media (max-width: 800px) {
   .main-grid { grid-template-columns: 1fr; }
 }
+
+.side-panel { display: flex; }
+.panel-fill { display: flex; flex-direction: column; flex: 1; margin-bottom: 0; }
+.panel-fill .form { flex: 1; justify-content: space-between; }
 
 .panel {
   background: var(--panel);

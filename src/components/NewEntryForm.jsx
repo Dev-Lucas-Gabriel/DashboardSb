@@ -24,7 +24,7 @@ export default function NewEntryForm({ onAdd }) {
   }
 
   return (
-    <div className="panel">
+    <div className="panel panel-fill">
       <div className="panel-title">Novo lançamento</div>
       <form onSubmit={handleSubmit} className="form">
         <label className="field-label">
