@@ -36,3 +36,45 @@ create policy "Usuário exclui seus lançamentos"
   on public.entries for delete
   to authenticated
   using (auth.uid() = created_by);
+
+-- Metas e objetivos --------------------------------------------------------
+
+create table if not exists public.goals (
+  id uuid primary key default gen_random_uuid(),
+  created_by uuid references auth.users(id) default auth.uid() not null,
+  tipo text not null check (tipo in ('lucro', 'faturamento', 'gastos', 'personalizada')),
+  titulo text default '',
+  valor_alvo numeric(12,2) not null default 0,
+  valor_atual numeric(12,2) not null default 0,
+  mes date,
+  prazo date,
+  created_at timestamptz not null default now()
+);
+
+alter table public.goals enable row level security;
+
+drop policy if exists "Usuário vê apenas suas metas" on public.goals;
+drop policy if exists "Usuário adiciona suas metas" on public.goals;
+drop policy if exists "Usuário atualiza suas metas" on public.goals;
+drop policy if exists "Usuário exclui suas metas" on public.goals;
+
+create policy "Usuário vê apenas suas metas"
+  on public.goals for select
+  to authenticated
+  using (auth.uid() = created_by);
+
+create policy "Usuário adiciona suas metas"
+  on public.goals for insert
+  to authenticated
+  with check (auth.uid() = created_by);
+
+create policy "Usuário atualiza suas metas"
+  on public.goals for update
+  to authenticated
+  using (auth.uid() = created_by)
+  with check (auth.uid() = created_by);
+
+create policy "Usuário exclui suas metas"
+  on public.goals for delete
+  to authenticated
+  using (auth.uid() = created_by);

@@ -6,13 +6,16 @@ import StatGrid from "./components/StatCard";
 import { DailyProfitChart, MonthlyHistoryChart } from "./components/Charts";
 import NewEntryForm from "./components/NewEntryForm";
 import Ledger from "./components/Ledger";
+import Goals from "./components/Goals";
 import { useAuth } from "./hooks/useAuth";
 import { useEntries } from "./hooks/useEntries";
+import { useGoals } from "./hooks/useGoals";
 import { MONTH_NAMES, todayISO, firstDayOfMonth, lastDayOfMonth, fmtShort } from "./utils/format";
 
 export default function App() {
   const { user, checking, signIn, signOut } = useAuth();
   const { entries, loading, saveError, addEntry, removeEntry } = useEntries(!!user);
+  const { goals, saveError: goalsSaveError, addGoal, addProgress, removeGoal } = useGoals(!!user);
 
   const today = todayISO();
   const [rangeStart, setRangeStart] = useState(firstDayOfMonth(today));
@@ -104,7 +107,7 @@ export default function App() {
         entries={entries}
       />
 
-      {saveError && (
+      {(saveError || goalsSaveError) && (
         <div className="error-banner">Não foi possível salvar automaticamente agora. Tente novamente em instantes.</div>
       )}
 
@@ -121,6 +124,8 @@ export default function App() {
           <NewEntryForm onAdd={addEntry} />
         </div>
       </section>
+
+      <Goals goals={goals} entries={entries} onAdd={addGoal} onAddProgress={addProgress} onRemove={removeGoal} />
 
       <Ledger entries={rangeEntries} periodLabel={periodLabel} onRemove={removeEntry} />
     </div>
