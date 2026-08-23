@@ -97,7 +97,7 @@ export default function App() {
       <div className="root">
         <div className="loading-screen">
           <div className="spinner" />
-          <div className="loading-text">Abrindo o caixa da SBSHOP…</div>
+          <div className="loading-text">Abrindo DASHBOARD…</div>
         </div>
       </div>
     );
