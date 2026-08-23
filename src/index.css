@@ -242,6 +242,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background: #0F1013; border: 1px solid var(--border); border-radius: 12px; padding: 14px;
 }
 .goal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+.goal-head-actions { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
 .goal-title { font-weight: 600; font-size: 13.5px; color: var(--text); }
 .goal-sub { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; }
 .goal-bar-track {
@@ -257,6 +258,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .goal-success { color: var(--up); font-size: 11.5px; margin-top: 6px; }
 .goal-progress-form { display: flex; gap: 8px; margin-top: 10px; }
 .goal-progress-form .input { flex: 1; }
+.goal-icon-btn {
+  background: transparent; border: none; color: var(--text-dim); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; padding: 3px; border-radius: 5px;
+}
+.goal-icon-btn:hover { color: var(--gold); }
+.goal-edit-form { display: flex; align-items: center; gap: 4px; }
+.goal-edit-input {
+  width: 110px; padding: 3px 6px; font-size: 12.5px;
+}
+.goal-edit-fields-form { gap: 10px; }
+.goal-edit-actions { display: flex; gap: 8px; margin-top: 2px; }
+.goal-edit-actions .preset-btn { flex-shrink: 0; }
 .goal-add-progress-btn {
   background: transparent; border: 1px solid var(--border); color: var(--gold); border-radius: 8px;
   padding: 0 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;

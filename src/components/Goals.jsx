@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Target, Plus, Trash2, PlusCircle } from "lucide-react";
+import { Target, Plus, Trash2, PlusCircle, Pencil, Check, X } from "lucide-react";
 import { fmtBRL, MONTH_NAMES } from "../utils/format";
 
 const TIPO_LABEL = {
@@ -25,8 +25,17 @@ function computeCurrent(goal, entries) {
   return 0;
 }
 
-function GoalCard({ goal, entries, onAddProgress, onRemove }) {
+function GoalCard({ goal, entries, onAddProgress, onSetProgress, onUpdateGoal, onRemove }) {
   const [addValue, setAddValue] = useState("");
+  const [editing, setEditing] = useState(false);
+  const [editValue, setEditValue] = useState("");
+  const [editingGoal, setEditingGoal] = useState(false);
+  const [fTitulo, setFTitulo] = useState("");
+  const [fValorAlvo, setFValorAlvo] = useState("");
+  const [fMes, setFMes] = useState("");
+  const [fPrazo, setFPrazo] = useState("");
+  const [goalError, setGoalError] = useState("");
+  const isPersonalizada = goal.tipo === "personalizada";
   const current = computeCurrent(goal, entries);
   const target = Number(goal.valor_alvo) || 0;
   const isLimite = goal.tipo === "gastos";
@@ -44,6 +53,100 @@ function GoalCard({ goal, entries, onAddProgress, onRemove }) {
     setAddValue("");
   }
 
+  function startEditing() {
+    setEditValue(String(current).replace(".", ","));
+    setEditing(true);
+  }
+
+  function handleSaveEdit(e) {
+    e.preventDefault();
+    const novoValor = parseFloat(editValue.replace(",", ".")) || 0;
+    onSetProgress(goal.id, novoValor);
+    setEditing(false);
+  }
+
+  function startEditGoal() {
+    setFTitulo(goal.titulo || "");
+    setFValorAlvo(String(goal.valor_alvo).replace(".", ","));
+    setFMes((goal.mes || "").slice(0, 7));
+    setFPrazo(goal.prazo || "");
+    setGoalError("");
+    setEditingGoal(true);
+  }
+
+  function handleSaveGoal(e) {
+    e.preventDefault();
+    const valor = parseFloat(fValorAlvo.replace(",", ".")) || 0;
+    if (valor <= 0) {
+      setGoalError("Informe um valor alvo maior que zero.");
+      return;
+    }
+    if (isPersonalizada && !fTitulo.trim()) {
+      setGoalError("Dê um nome para a meta personalizada.");
+      return;
+    }
+    onUpdateGoal(goal.id, {
+      titulo: isPersonalizada ? fTitulo : "",
+      valor_alvo: valor,
+      mes: isPersonalizada ? null : `${fMes}-01`,
+      prazo: isPersonalizada ? fPrazo || null : null,
+    });
+    setEditingGoal(false);
+  }
+
+  if (editingGoal) {
+    return (
+      <div className="goal-card">
+        <form onSubmit={handleSaveGoal} className="form goal-edit-fields-form">
+          <div className="goal-sub">{TIPO_LABEL[goal.tipo]}</div>
+          {isPersonalizada && (
+            <label className="field-label">
+              Nome da meta
+              <input
+                type="text"
+                value={fTitulo}
+                onChange={(e) => setFTitulo(e.target.value)}
+                className="input"
+                autoFocus
+              />
+            </label>
+          )}
+          <label className="field-label">
+            Valor alvo (R$)
+            <input
+              type="text"
+              inputMode="decimal"
+              value={fValorAlvo}
+              onChange={(e) => setFValorAlvo(e.target.value)}
+              className="input"
+              autoFocus={!isPersonalizada}
+            />
+          </label>
+          {isPersonalizada ? (
+            <label className="field-label">
+              Prazo (opcional)
+              <input type="date" value={fPrazo} onChange={(e) => setFPrazo(e.target.value)} className="input" />
+            </label>
+          ) : (
+            <label className="field-label">
+              Mês
+              <input type="month" value={fMes} onChange={(e) => setFMes(e.target.value)} className="input" />
+            </label>
+          )}
+          {goalError && <div className="form-error">{goalError}</div>}
+          <div className="goal-edit-actions">
+            <button type="submit" className="add-btn" style={{ flex: 1 }}>
+              <Check size={16} /> Salvar
+            </button>
+            <button type="button" className="preset-btn" onClick={() => setEditingGoal(false)}>
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  }
+
   return (
     <div className="goal-card">
       <div className="goal-head">
@@ -55,9 +158,14 @@ function GoalCard({ goal, entries, onAddProgress, onRemove }) {
             {goal.prazo ? ` · até ${goal.prazo.split("-").reverse().join("/")}` : ""}
           </div>
         </div>
-        <button className="del-btn" onClick={() => onRemove(goal.id)} aria-label="Excluir meta">
-          <Trash2 size={14} />
-        </button>
+        <div className="goal-head-actions">
+          <button className="goal-icon-btn" onClick={startEditGoal} aria-label="Editar meta">
+            <Pencil size={14} />
+          </button>
+          <button className="del-btn" onClick={() => onRemove(goal.id)} aria-label="Excluir meta">
+            <Trash2 size={14} />
+          </button>
+        </div>
       </div>
 
       <div className="goal-bar-track">
@@ -65,7 +173,33 @@ function GoalCard({ goal, entries, onAddProgress, onRemove }) {
       </div>
 
       <div className="goal-values">
-        <span style={{ color: barColor, fontWeight: 600 }}>{fmtBRL(current)}</span>
+        {editing ? (
+          <form onSubmit={handleSaveEdit} className="goal-edit-form">
+            <input
+              type="text"
+              inputMode="decimal"
+              autoFocus
+              value={editValue}
+              onChange={(e) => setEditValue(e.target.value)}
+              className="input goal-edit-input"
+            />
+            <button type="submit" className="goal-icon-btn" aria-label="Salvar valor">
+              <Check size={14} />
+            </button>
+            <button type="button" className="goal-icon-btn" aria-label="Cancelar" onClick={() => setEditing(false)}>
+              <X size={14} />
+            </button>
+          </form>
+        ) : (
+          <span style={{ color: barColor, fontWeight: 600, display: "flex", alignItems: "center", gap: 6 }}>
+            {fmtBRL(current)}
+            {goal.tipo === "personalizada" && (
+              <button className="goal-icon-btn" aria-label="Editar valor atual" onClick={startEditing}>
+                <Pencil size={12} />
+              </button>
+            )}
+          </span>
+        )}
         <span className="goal-target">
           {isLimite ? "limite de " : "meta de "}
           {fmtBRL(target)} · {percent.toFixed(0)}%
@@ -185,7 +319,7 @@ function NewGoalForm({ onAdd, currentMonthISO }) {
   );
 }
 
-export default function Goals({ goals, entries, onAdd, onAddProgress, onRemove }) {
+export default function Goals({ goals, entries, onAdd, onUpdate, onAddProgress, onSetProgress, onRemove }) {
   const currentMonthISO = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
   return (
@@ -201,7 +335,15 @@ export default function Goals({ goals, entries, onAdd, onAddProgress, onRemove }
             <div className="empty-state">Nenhuma meta cadastrada ainda.</div>
           ) : (
             goals.map((g) => (
-              <GoalCard key={g.id} goal={g} entries={entries} onAddProgress={onAddProgress} onRemove={onRemove} />
+              <GoalCard
+                key={g.id}
+                goal={g}
+                entries={entries}
+                onAddProgress={onAddProgress}
+                onSetProgress={onSetProgress}
+                onUpdateGoal={onUpdate}
+                onRemove={onRemove}
+              />
             ))
           )}
         </div>

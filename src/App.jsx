@@ -15,7 +15,15 @@ import { MONTH_NAMES, todayISO, firstDayOfMonth, lastDayOfMonth, fmtShort } from
 export default function App() {
   const { user, checking, signIn, signOut } = useAuth();
   const { entries, loading, saveError, addEntry, removeEntry } = useEntries(!!user);
-  const { goals, saveError: goalsSaveError, addGoal, addProgress, removeGoal } = useGoals(!!user);
+  const {
+    goals,
+    saveError: goalsSaveError,
+    addGoal,
+    updateGoal,
+    addProgress,
+    setProgress,
+    removeGoal,
+  } = useGoals(!!user);
 
   const today = todayISO();
   const [rangeStart, setRangeStart] = useState(firstDayOfMonth(today));
@@ -125,7 +133,15 @@ export default function App() {
         </div>
       </section>
 
-      <Goals goals={goals} entries={entries} onAdd={addGoal} onAddProgress={addProgress} onRemove={removeGoal} />
+      <Goals
+        goals={goals}
+        entries={entries}
+        onAdd={addGoal}
+        onUpdate={updateGoal}
+        onAddProgress={addProgress}
+        onSetProgress={setProgress}
+        onRemove={removeGoal}
+      />
 
       <Ledger entries={rangeEntries} periodLabel={periodLabel} onRemove={removeEntry} />
     </div>

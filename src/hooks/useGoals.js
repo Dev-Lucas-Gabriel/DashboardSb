@@ -69,6 +69,35 @@ export function useGoals(enabled) {
     [goals, fetchGoals]
   );
 
+  const updateGoal = useCallback(
+    async (id, { titulo, valor_alvo, mes, prazo }) => {
+      const { error } = await supabase
+        .from("goals")
+        .update({ titulo: (titulo || "").trim(), valor_alvo, mes: mes || null, prazo: prazo || null })
+        .eq("id", id);
+      if (error) {
+        setSaveError(true);
+        return;
+      }
+      setSaveError(false);
+      fetchGoals();
+    },
+    [fetchGoals]
+  );
+
+  const setProgress = useCallback(
+    async (id, novoValor) => {
+      const { error } = await supabase.from("goals").update({ valor_atual: Number(novoValor) }).eq("id", id);
+      if (error) {
+        setSaveError(true);
+        return;
+      }
+      setSaveError(false);
+      fetchGoals();
+    },
+    [fetchGoals]
+  );
+
   const removeGoal = useCallback(
     async (id) => {
       const { error } = await supabase.from("goals").delete().eq("id", id);
@@ -82,5 +111,5 @@ export function useGoals(enabled) {
     [fetchGoals]
   );
 
-  return { goals, loading, saveError, addGoal, addProgress, removeGoal };
+  return { goals, loading, saveError, addGoal, updateGoal, addProgress, setProgress, removeGoal };
 }
