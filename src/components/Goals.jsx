@@ -43,7 +43,7 @@ function GoalCard({ goal, entries, onAddProgress, onSetProgress, onUpdateGoal, o
   const barWidth = Math.min(100, Math.max(0, percent));
   const over = isLimite ? current > target : false;
   const achieved = !isLimite && target > 0 && current >= target;
-  const barColor = over ? "var(--down)" : achieved ? "var(--up)" : "var(--gold)";
+  const barColor = over ? "var(--down)" : achieved ? "var(--up)" : "var(--accent)";
 
   function handleAddProgress(e) {
     e.preventDefault();

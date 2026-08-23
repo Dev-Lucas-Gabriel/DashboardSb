@@ -27,7 +27,7 @@ export default function Ledger({ entries, periodLabel, onRemove }) {
                   <div className="ledger-amt" style={{ color: "#E5584A" }}>
                     {e.saida > 0 ? `−${fmtBRL(e.saida)}` : "—"}
                   </div>
-                  <div className="ledger-amt" style={{ color: lucro >= 0 ? "#D4A24C" : "#E5584A", fontWeight: 600 }}>
+                  <div className="ledger-amt" style={{ color: lucro >= 0 ? "#2F80FF" : "#E5584A", fontWeight: 600 }}>
                     {fmtBRL(lucro)}
                   </div>
                   <button className="del-btn" onClick={() => onRemove(e.id)} aria-label="Excluir lançamento">

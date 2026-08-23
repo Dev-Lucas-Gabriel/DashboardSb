@@ -1,12 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 :root {
-  --bg: #0A0A0C;
-  --panel: #131417;
-  --border: #1E2025;
-  --text: #F5F5F0;
-  --text-dim: #8B8D93;
-  --gold: #D4A24C;
+  --bg: #05070C;
+  --panel: #0E1420;
+  --border: #1B2536;
+  --text: #F3F6FB;
+  --text-dim: #8A96AB;
+  --accent: #2F80FF;
+  --accent-light: #7AB4FF;
   --up: #3ECF8E;
   --down: #E5584A;
   --font-display: 'Sora', sans-serif;
@@ -55,8 +56,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .spinner {
   width: 20px;
   height: 20px;
-  border: 2px solid #1E2025;
-  border-top-color: var(--gold);
+  border: 2px solid #1B2536;
+  border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -76,7 +77,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .brand-row { display: flex; align-items: center; gap: 12px; }
 .brand-mark {
   width: 38px; height: 38px; border-radius: 10px;
-  background: linear-gradient(135deg, #D4A24C, #E8C77A);
+  background: linear-gradient(135deg, #2F80FF, #7AB4FF);
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .brand-name { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: 0.02em; }
@@ -124,15 +125,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .filter-left { display: flex; align-items: center; gap: 8px; }
 .filter-until { color: var(--text-dim); font-size: 13px; }
 .date-input {
-  background: #0F1013; border: 1px solid var(--border); border-radius: 7px;
+  background: #0B1018; border: 1px solid var(--border); border-radius: 7px;
   padding: 6px 8px; color: var(--text); font-family: var(--font-mono); font-size: 12.5px; outline: none;
 }
 .preset-row { display: flex; gap: 6px; flex-wrap: wrap; }
 .preset-btn {
-  background: #0F1013; border: 1px solid var(--border); color: var(--text-dim);
+  background: #0B1018; border: 1px solid var(--border); color: var(--text-dim);
   border-radius: 7px; padding: 6px 10px; font-size: 12px; cursor: pointer; font-family: var(--font-body);
 }
-.preset-btn:hover { color: var(--text); border-color: #2A2D33; }
+.preset-btn:hover { color: var(--text); border-color: #29354A; }
 
 .error-banner {
   background: rgba(229, 88, 74, 0.1);
@@ -155,7 +156,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   padding: 16px; display: flex; align-items: flex-start; gap: 12px;
 }
 .stat-icon {
-  width: 30px; height: 30px; border-radius: 8px; background: #1A1B1F;
+  width: 30px; height: 30px; border-radius: 8px; background: #141B28;
   display: flex; align-items: center; justify-content: center; color: var(--text-dim); flex-shrink: 0;
 }
 .stat-label { font-size: 12px; color: var(--text-dim); margin-bottom: 4px; }
@@ -191,13 +192,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .form { display: flex; flex-direction: column; gap: 12px; }
 .field-label { display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: var(--text-dim); }
 .input {
-  background: #0F1013; border: 1px solid var(--border); border-radius: 8px;
+  background: #0B1018; border: 1px solid var(--border); border-radius: 8px;
   padding: 9px 10px; color: var(--text); font-family: var(--font-mono); font-size: 13.5px; outline: none;
 }
-.input:focus { border-color: var(--gold); }
+.input:focus { border-color: var(--accent); }
 .form-error { color: var(--down); font-size: 12px; }
 .add-btn {
-  margin-top: 4px; background: var(--gold); color: #0A0A0C; border: none; border-radius: 8px;
+  margin-top: 4px; background: var(--accent); color: #0A0A0C; border: none; border-radius: 8px;
   padding: 10px 14px; font-weight: 600; font-size: 13.5px; cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-body);
 }
@@ -223,7 +224,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .ledger-note { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ledger-amt { font-family: var(--font-mono); font-size: 12.5px; text-align: right; }
 .del-btn {
-  background: transparent; border: none; color: #5A5C63; cursor: pointer;
+  background: transparent; border: none; color: #5A6478; cursor: pointer;
   display: flex; align-items: center; justify-content: center; padding: 4px; border-radius: 6px;
 }
 .del-btn:hover { color: var(--down); }
@@ -239,14 +240,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 .goals-list { display: flex; flex-direction: column; gap: 12px; }
 .goal-card {
-  background: #0F1013; border: 1px solid var(--border); border-radius: 12px; padding: 14px;
+  background: #0B1018; border: 1px solid var(--border); border-radius: 12px; padding: 14px;
 }
 .goal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
 .goal-head-actions { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
 .goal-title { font-weight: 600; font-size: 13.5px; color: var(--text); }
 .goal-sub { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; }
 .goal-bar-track {
-  height: 8px; background: #1A1B1F; border-radius: 6px; overflow: hidden;
+  height: 8px; background: #141B28; border-radius: 6px; overflow: hidden;
 }
 .goal-bar-fill { height: 100%; border-radius: 6px; transition: width 0.3s ease; }
 .goal-values {
@@ -262,7 +263,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background: transparent; border: none; color: var(--text-dim); cursor: pointer;
   display: flex; align-items: center; justify-content: center; padding: 3px; border-radius: 5px;
 }
-.goal-icon-btn:hover { color: var(--gold); }
+.goal-icon-btn:hover { color: var(--accent); }
 .goal-edit-form { display: flex; align-items: center; gap: 4px; }
 .goal-edit-input {
   width: 110px; padding: 3px 6px; font-size: 12.5px;
@@ -271,9 +272,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .goal-edit-actions { display: flex; gap: 8px; margin-top: 2px; }
 .goal-edit-actions .preset-btn { flex-shrink: 0; }
 .goal-add-progress-btn {
-  background: transparent; border: 1px solid var(--border); color: var(--gold); border-radius: 8px;
+  background: transparent; border: 1px solid var(--border); color: var(--accent); border-radius: 8px;
   padding: 0 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;
 }
-.goal-add-progress-btn:hover { border-color: var(--gold); }
+.goal-add-progress-btn:hover { border-color: var(--accent); }
 .goals-new { background: transparent; }
 .goal-form select.input { appearance: none; }
